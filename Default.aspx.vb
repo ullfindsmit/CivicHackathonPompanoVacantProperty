@@ -1,0 +1,752 @@
+﻿
+Partial Class _Default
+    Inherits System.Web.UI.Page
+
+    Dim ExtendedDataList As New List(Of ExtendedData)
+    Dim InspectionDataList As New List(Of InspectionData)
+
+    Dim sUseCodeContent As String = ""
+    Public Function GetCodeName(CodeNumber As String) As String
+        If sUseCodeContent = "" Then
+            sUseCodeContent = IO.File.ReadAllText(Server.MapPath("/App_Data/UseCodes.txt"))
+        End If
+
+        With sUseCodeContent.Split(vbCrLf).Where(Function(x) x.ToLower.StartsWith(CodeNumber))
+            If .SingleOrDefault IsNot Nothing Then
+                Return .Single
+            End If
+        End With
+        Return ""
+    End Function
+
+    Private Sub form1_Load(sender As Object, e As EventArgs) Handles form1.Load
+        Dim ExtendedDataFile As String = Server.MapPath("/App_Data/PompTaxExtended201801.csv")
+
+        Using MyReader As New Microsoft.VisualBasic.FileIO.TextFieldParser(ExtendedDataFile)
+            MyReader.TextFieldType = Microsoft.VisualBasic.FileIO.FieldType.Delimited
+            MyReader.Delimiters = New String() {","}
+            Dim currentRow As String()
+            While Not MyReader.EndOfData
+                Try
+                    currentRow = MyReader.ReadFields()
+                    Dim nExtendedData As New ExtendedData
+                    nExtendedData.FOLIO_NUMBER = currentRow(ExtendedDataEnum.FOLIO_NUMBER)
+                    nExtendedData.NAME_LINE_1 = currentRow(ExtendedDataEnum.NAME_LINE_1)
+                    nExtendedData.NAME_LINE_2 = currentRow(ExtendedDataEnum.NAME_LINE_2)
+                    nExtendedData.ADDRESS_LINE_1 = currentRow(ExtendedDataEnum.ADDRESS_LINE_1)
+                    nExtendedData.CITY = currentRow(ExtendedDataEnum.CITY)
+                    nExtendedData.STATE = currentRow(ExtendedDataEnum.STATE)
+                    nExtendedData.ZIP = currentRow(ExtendedDataEnum.ZIP)
+                    nExtendedData.ADDRESS_LINE_2 = currentRow(ExtendedDataEnum.ADDRESS_LINE_2)
+                    nExtendedData.LEGAL_LINE_1 = currentRow(ExtendedDataEnum.LEGAL_LINE_1)
+                    nExtendedData.LEGAL_LINE_2 = currentRow(ExtendedDataEnum.LEGAL_LINE_2)
+                    nExtendedData.LEGAL_LINE_3 = currentRow(ExtendedDataEnum.LEGAL_LINE_3)
+                    nExtendedData.LEGAL_LINE_4 = currentRow(ExtendedDataEnum.LEGAL_LINE_4)
+                    nExtendedData.LEGAL_LINE_5 = currentRow(ExtendedDataEnum.LEGAL_LINE_5)
+                    nExtendedData.LEGAL_LINE_6 = currentRow(ExtendedDataEnum.LEGAL_LINE_6)
+                    nExtendedData.LEGAL_LINE_7 = currentRow(ExtendedDataEnum.LEGAL_LINE_7)
+                    nExtendedData.LEGAL_LINE_8 = currentRow(ExtendedDataEnum.LEGAL_LINE_8)
+                    nExtendedData.LEGAL_LINE_9 = currentRow(ExtendedDataEnum.LEGAL_LINE_9)
+                    nExtendedData.LEGAL_LINE_10 = currentRow(ExtendedDataEnum.LEGAL_LINE_10)
+                    nExtendedData.LEGAL_LINE_11 = currentRow(ExtendedDataEnum.LEGAL_LINE_11)
+                    nExtendedData.LEGAL_LINE_12 = currentRow(ExtendedDataEnum.LEGAL_LINE_12)
+                    nExtendedData.LEGAL_LINE_13 = currentRow(ExtendedDataEnum.LEGAL_LINE_13)
+                    nExtendedData.LEGAL_LINE_14 = currentRow(ExtendedDataEnum.LEGAL_LINE_14)
+                    nExtendedData.ZIP4 = currentRow(ExtendedDataEnum.ZIP4)
+                    nExtendedData.MILLAGE_CODE = currentRow(ExtendedDataEnum.MILLAGE_CODE)
+                    nExtendedData.USE_CODE = currentRow(ExtendedDataEnum.USE_CODE)
+                    nExtendedData.USE_TYPE = currentRow(ExtendedDataEnum.USE_TYPE)
+                    nExtendedData.MARKET_AREA = currentRow(ExtendedDataEnum.MARKET_AREA)
+                    nExtendedData.COMB_SPLIT = currentRow(ExtendedDataEnum.COMB_SPLIT)
+                    nExtendedData.JUST_LAND_VALUE = currentRow(ExtendedDataEnum.JUST_LAND_VALUE)
+                    nExtendedData.JUST_BUILDING_VALUE = currentRow(ExtendedDataEnum.JUST_BUILDING_VALUE)
+                    nExtendedData.JUST_OTHER_VALUE = currentRow(ExtendedDataEnum.JUST_OTHER_VALUE)
+                    nExtendedData.LY_JUSTVAL = currentRow(ExtendedDataEnum.LY_JUSTVAL)
+                    nExtendedData.LY_SOHL = currentRow(ExtendedDataEnum.LY_SOHL)
+                    nExtendedData.LY_SOHB = currentRow(ExtendedDataEnum.LY_SOHB)
+                    nExtendedData.PREV_SOH_VALUE = currentRow(ExtendedDataEnum.PREV_SOH_VALUE)
+                    nExtendedData.NEW_SOH_VALUE = currentRow(ExtendedDataEnum.NEW_SOH_VALUE)
+                    nExtendedData.NEW_SB_SOH_VALUE = currentRow(ExtendedDataEnum.NEW_SB_SOH_VALUE)
+                    nExtendedData.HE1_AMOUNT = currentRow(ExtendedDataEnum.HE1_AMOUNT)
+                    nExtendedData.HE2_AMOUNT = currentRow(ExtendedDataEnum.HE2_AMOUNT)
+                    nExtendedData.WVD_AMOUNT = currentRow(ExtendedDataEnum.WVD_AMOUNT)
+                    nExtendedData.EXEMPTION_AMOUNT = currentRow(ExtendedDataEnum.EXEMPTION_AMOUNT)
+                    nExtendedData.COUNTY_MEX_AMOUNT = currentRow(ExtendedDataEnum.COUNTY_MEX_AMOUNT)
+                    nExtendedData.SCHOOL_MEX_AMOUNT = currentRow(ExtendedDataEnum.SCHOOL_MEX_AMOUNT)
+                    nExtendedData.CITY_MEX_AMOUNT = currentRow(ExtendedDataEnum.CITY_MEX_AMOUNT)
+                    nExtendedData.INDEP_MEX_AMOUNT = currentRow(ExtendedDataEnum.INDEP_MEX_AMOUNT)
+                    nExtendedData.COUNTY_TAXABLE = currentRow(ExtendedDataEnum.COUNTY_TAXABLE)
+                    nExtendedData.SCHOOL_TAXABLE = currentRow(ExtendedDataEnum.SCHOOL_TAXABLE)
+                    nExtendedData.CITY_TAXABLE = currentRow(ExtendedDataEnum.CITY_TAXABLE)
+                    nExtendedData.INDEP_TAXABLE = currentRow(ExtendedDataEnum.INDEP_TAXABLE)
+                    nExtendedData.HE_PERCENT = currentRow(ExtendedDataEnum.HE_PERCENT)
+                    nExtendedData.LY_HE_PERCENT = currentRow(ExtendedDataEnum.LY_HE_PERCENT)
+                    nExtendedData.ME_PERCENT = currentRow(ExtendedDataEnum.ME_PERCENT)
+                    nExtendedData.WVD_TYPE = currentRow(ExtendedDataEnum.WVD_TYPE)
+                    nExtendedData.EXEMPTION_TYPE = currentRow(ExtendedDataEnum.EXEMPTION_TYPE)
+                    nExtendedData.SOH_YEAR = currentRow(ExtendedDataEnum.SOH_YEAR)
+                    nExtendedData.COM_SOH_YEAR = currentRow(ExtendedDataEnum.COM_SOH_YEAR)
+                    nExtendedData.FLAT_RATE_FLAG = currentRow(ExtendedDataEnum.FLAT_RATE_FLAG)
+                    nExtendedData.DEL_FLAG = currentRow(ExtendedDataEnum.DEL_FLAG)
+                    nExtendedData.DEL_VALUE = currentRow(ExtendedDataEnum.DEL_VALUE)
+                    nExtendedData.ADD_VALUE = currentRow(ExtendedDataEnum.ADD_VALUE)
+                    nExtendedData.LIGHT_DISTRICT = currentRow(ExtendedDataEnum.LIGHT_DISTRICT)
+                    nExtendedData.GARBAGE_DISTRICT = currentRow(ExtendedDataEnum.GARBAGE_DISTRICT)
+                    nExtendedData.GARBAGE_ASSESSMENT = currentRow(ExtendedDataEnum.GARBAGE_ASSESSMENT)
+                    nExtendedData.FIRE_DISTRICT = currentRow(ExtendedDataEnum.FIRE_DISTRICT)
+                    nExtendedData.FIRE_CLASS = currentRow(ExtendedDataEnum.FIRE_CLASS)
+                    nExtendedData.FIRE_ASSESSMENT = currentRow(ExtendedDataEnum.FIRE_ASSESSMENT)
+                    nExtendedData.SAFE_NEIGHBORHOOD_DISTRICT = currentRow(ExtendedDataEnum.SAFE_NEIGHBORHOOD_DISTRICT)
+                    nExtendedData.SAFE_NEIGHORHOOD_ASSESSMENT = currentRow(ExtendedDataEnum.SAFE_NEIGHORHOOD_ASSESSMENT)
+                    nExtendedData.DRAINAGE_DISTRICT = currentRow(ExtendedDataEnum.DRAINAGE_DISTRICT)
+                    nExtendedData.DRAINAGE_DISTRICT_ASSESSMENT = currentRow(ExtendedDataEnum.DRAINAGE_DISTRICT_ASSESSMENT)
+                    nExtendedData.IMPROVEMENT_DISTRICT = currentRow(ExtendedDataEnum.IMPROVEMENT_DISTRICT)
+                    nExtendedData.IMPROVEMENT_ASSESSMENT = currentRow(ExtendedDataEnum.IMPROVEMENT_ASSESSMENT)
+                    nExtendedData.SALE_DATE_1 = currentRow(ExtendedDataEnum.SALE_DATE_1)
+                    nExtendedData.DEED_TYPE_1 = currentRow(ExtendedDataEnum.DEED_TYPE_1)
+                    nExtendedData.STAMP_AMOUNT_1 = currentRow(ExtendedDataEnum.STAMP_AMOUNT_1)
+                    nExtendedData.BOOK_1 = currentRow(ExtendedDataEnum.BOOK_1)
+                    nExtendedData.PAGE_1 = currentRow(ExtendedDataEnum.PAGE_1)
+                    nExtendedData.SALE_DATE_2 = currentRow(ExtendedDataEnum.SALE_DATE_2)
+                    nExtendedData.DEED_TYPE_2 = currentRow(ExtendedDataEnum.DEED_TYPE_2)
+                    nExtendedData.STAMP_AMOUNT_2 = currentRow(ExtendedDataEnum.STAMP_AMOUNT_2)
+                    nExtendedData.BOOK_2 = currentRow(ExtendedDataEnum.BOOK_2)
+                    nExtendedData.PAGE_2 = currentRow(ExtendedDataEnum.PAGE_2)
+                    nExtendedData.SALE_DATE_3 = currentRow(ExtendedDataEnum.SALE_DATE_3)
+                    nExtendedData.DEED_TYPE_3 = currentRow(ExtendedDataEnum.DEED_TYPE_3)
+                    nExtendedData.STAMP_AMOUNT_3 = currentRow(ExtendedDataEnum.STAMP_AMOUNT_3)
+                    nExtendedData.BOOK_3 = currentRow(ExtendedDataEnum.BOOK_3)
+                    nExtendedData.PAGE_3 = currentRow(ExtendedDataEnum.PAGE_3)
+                    nExtendedData.SALE_DATE_4 = currentRow(ExtendedDataEnum.SALE_DATE_4)
+                    nExtendedData.DEED_TYPE_4 = currentRow(ExtendedDataEnum.DEED_TYPE_4)
+                    nExtendedData.STAMP_AMOUNT_4 = currentRow(ExtendedDataEnum.STAMP_AMOUNT_4)
+                    nExtendedData.BOOK_4 = currentRow(ExtendedDataEnum.BOOK_4)
+                    nExtendedData.PAGE_4 = currentRow(ExtendedDataEnum.PAGE_4)
+                    nExtendedData.SALE_DATE_5 = currentRow(ExtendedDataEnum.SALE_DATE_5)
+                    nExtendedData.DEED_TYPE_5 = currentRow(ExtendedDataEnum.DEED_TYPE_5)
+                    nExtendedData.STAMP_AMOUNT_5 = currentRow(ExtendedDataEnum.STAMP_AMOUNT_5)
+                    nExtendedData.BOOK_5 = currentRow(ExtendedDataEnum.BOOK_5)
+                    nExtendedData.PAGE_5 = currentRow(ExtendedDataEnum.PAGE_5)
+                    nExtendedData.LAND_CALC_PRC_PER_FACT_UNIT_1 = currentRow(ExtendedDataEnum.LAND_CALC_PRC_PER_FACT_UNIT_1)
+                    nExtendedData.LAND_CALC_FACT_1 = currentRow(ExtendedDataEnum.LAND_CALC_FACT_1)
+                    nExtendedData.LAND_CALC_TYPE_1 = currentRow(ExtendedDataEnum.LAND_CALC_TYPE_1)
+                    nExtendedData.LAND_CALC_PRC_PER_FACT_UNIT_2 = currentRow(ExtendedDataEnum.LAND_CALC_PRC_PER_FACT_UNIT_2)
+                    nExtendedData.LAND_CALC_FACT_2 = currentRow(ExtendedDataEnum.LAND_CALC_FACT_2)
+                    nExtendedData.LAND_CALC_TYPE_2 = currentRow(ExtendedDataEnum.LAND_CALC_TYPE_2)
+                    nExtendedData.LAND_CALC_PRC_PER_FACT_UNIT_3 = currentRow(ExtendedDataEnum.LAND_CALC_PRC_PER_FACT_UNIT_3)
+                    nExtendedData.LAND_CALC_FACT_3 = currentRow(ExtendedDataEnum.LAND_CALC_FACT_3)
+                    nExtendedData.LAND_CALC_TYPE_3 = currentRow(ExtendedDataEnum.LAND_CALC_TYPE_3)
+                    nExtendedData.LAND_CALC_PRC_PER_FACT_UNIT_4 = currentRow(ExtendedDataEnum.LAND_CALC_PRC_PER_FACT_UNIT_4)
+                    nExtendedData.LAND_CALC_FACT_4 = currentRow(ExtendedDataEnum.LAND_CALC_FACT_4)
+                    nExtendedData.LAND_CALC_TYPE_4 = currentRow(ExtendedDataEnum.LAND_CALC_TYPE_4)
+                    nExtendedData.SITUS_STREET_NUMBER = currentRow(ExtendedDataEnum.SITUS_STREET_NUMBER)
+                    nExtendedData.SITUS_STREET_NUMBER_END = currentRow(ExtendedDataEnum.SITUS_STREET_NUMBER_END)
+                    nExtendedData.SITUS_STREET_DIRECTION = currentRow(ExtendedDataEnum.SITUS_STREET_DIRECTION)
+                    nExtendedData.SITUS_STREET_POST_DIR = currentRow(ExtendedDataEnum.SITUS_STREET_POST_DIR)
+                    nExtendedData.SITUS_STREET_NAME = currentRow(ExtendedDataEnum.SITUS_STREET_NAME)
+                    nExtendedData.SITUS_STREET_TYPE = currentRow(ExtendedDataEnum.SITUS_STREET_TYPE)
+                    nExtendedData.SITUS_CITY = currentRow(ExtendedDataEnum.SITUS_CITY)
+                    nExtendedData.SITUS_ZIP_CODE = currentRow(ExtendedDataEnum.SITUS_ZIP_CODE)
+                    nExtendedData.SITUS_UNIT_NUMBER = currentRow(ExtendedDataEnum.SITUS_UNIT_NUMBER)
+                    nExtendedData.LAST_YRS_JUST_LAND_VALUE = currentRow(ExtendedDataEnum.LAST_YRS_JUST_LAND_VALUE)
+                    nExtendedData.LAST_YRS_JUST_BLDG_VALUE = currentRow(ExtendedDataEnum.LAST_YRS_JUST_BLDG_VALUE)
+                    nExtendedData.LAST_YRS_JUST_OTHER_VALUE = currentRow(ExtendedDataEnum.LAST_YRS_JUST_OTHER_VALUE)
+                    nExtendedData.LAST_YRS_TAXABLE_VALUE = currentRow(ExtendedDataEnum.LAST_YRS_TAXABLE_VALUE)
+                    nExtendedData.LAST_YRS_ASSESSED = currentRow(ExtendedDataEnum.LAST_YRS_ASSESSED)
+                    nExtendedData.LAST_YRS_SOH = currentRow(ExtendedDataEnum.LAST_YRS_SOH)
+                    nExtendedData.TWO_YRS_JUST_LAND_VALUE = currentRow(ExtendedDataEnum.TWO_YRS_JUST_LAND_VALUE)
+                    nExtendedData.TWO_YRS_JUST_BLDG_VALUE = currentRow(ExtendedDataEnum.TWO_YRS_JUST_BLDG_VALUE)
+                    nExtendedData.TWO_YRS_JUST_OTHER_VALUE = currentRow(ExtendedDataEnum.TWO_YRS_JUST_OTHER_VALUE)
+                    nExtendedData.TWO_YRS_TAXABLE_VALUE = currentRow(ExtendedDataEnum.TWO_YRS_TAXABLE_VALUE)
+                    nExtendedData.TWO_YRS_ASSESSED = currentRow(ExtendedDataEnum.TWO_YRS_ASSESSED)
+                    nExtendedData.TWO_YRS_SOH = currentRow(ExtendedDataEnum.TWO_YRS_SOH)
+                    nExtendedData.BLDG_ADJ_SQ_FOOTAGE = currentRow(ExtendedDataEnum.BLDG_ADJ_SQ_FOOTAGE)
+                    nExtendedData.BLDG_TOT_SQ_FOOTAGE = currentRow(ExtendedDataEnum.BLDG_TOT_SQ_FOOTAGE)
+                    nExtendedData.BLDG_UNITS = currentRow(ExtendedDataEnum.BLDG_UNITS)
+                    nExtendedData.BLDG_YEAR_BUILT = currentRow(ExtendedDataEnum.BLDG_YEAR_BUILT)
+                    nExtendedData.BLDG_IMPROVE_QUAL = currentRow(ExtendedDataEnum.BLDG_IMPROVE_QUAL)
+                    nExtendedData.BLDG_CCLASS = currentRow(ExtendedDataEnum.BLDG_CCLASS)
+                    nExtendedData.BLDG_NUM_OF = currentRow(ExtendedDataEnum.BLDG_NUM_OF)
+                    nExtendedData.BLDG_USE_CODE = currentRow(ExtendedDataEnum.BLDG_USE_CODE)
+                    nExtendedData.HOMESTEAD_FLAG = currentRow(ExtendedDataEnum.HOMESTEAD_FLAG)
+                    nExtendedData.NCU_LAND = currentRow(ExtendedDataEnum.NCU_LAND)
+                    nExtendedData.NCU_BLDG = currentRow(ExtendedDataEnum.NCU_BLDG)
+                    nExtendedData.NCU_PCT = currentRow(ExtendedDataEnum.NCU_PCT)
+                    nExtendedData.LY_NCU_PCT = currentRow(ExtendedDataEnum.LY_NCU_PCT)
+                    nExtendedData.A_DATE = currentRow(ExtendedDataEnum.A_DATE)
+                    nExtendedData.L_DATE = currentRow(ExtendedDataEnum.L_DATE)
+                    nExtendedData.B_DATE = currentRow(ExtendedDataEnum.B_DATE)
+                    nExtendedData.SALE_VER1 = currentRow(ExtendedDataEnum.SALE_VER1)
+                    nExtendedData.SALE_VER2 = currentRow(ExtendedDataEnum.SALE_VER2)
+                    nExtendedData.SALE_VER3 = currentRow(ExtendedDataEnum.SALE_VER3)
+                    nExtendedData.SALE_VER4 = currentRow(ExtendedDataEnum.SALE_VER4)
+                    nExtendedData.DISASTER_CODE = currentRow(ExtendedDataEnum.DISASTER_CODE)
+                    nExtendedData.DISASTER_YEAR = currentRow(ExtendedDataEnum.DISASTER_YEAR)
+                    nExtendedData.SENIOR = currentRow(ExtendedDataEnum.SENIOR)
+                    nExtendedData.SEN_EX_COUNTY = currentRow(ExtendedDataEnum.SEN_EX_COUNTY)
+                    nExtendedData.SEN_EX_CITY = currentRow(ExtendedDataEnum.SEN_EX_CITY)
+                    nExtendedData.PORTABILITY = currentRow(ExtendedDataEnum.PORTABILITY)
+                    nExtendedData.PORT_SPLIT = currentRow(ExtendedDataEnum.PORT_SPLIT)
+                    nExtendedData.PORTED_VAL = currentRow(ExtendedDataEnum.PORTED_VAL)
+                    nExtendedData.PORT_UD = currentRow(ExtendedDataEnum.PORT_UD)
+                    nExtendedData.PORT_PMARKET = currentRow(ExtendedDataEnum.PORT_PMARKET)
+                    nExtendedData.PORT_PSOH = currentRow(ExtendedDataEnum.PORT_PSOH)
+                    nExtendedData.PORT_PCOUNTY = currentRow(ExtendedDataEnum.PORT_PCOUNTY)
+                    nExtendedData.PORT_PFOLIO = currentRow(ExtendedDataEnum.PORT_PFOLIO)
+                    nExtendedData.PORT_YEAR_TRANS = currentRow(ExtendedDataEnum.PORT_YEAR_TRANS)
+                    nExtendedData.PORT_INTERNAL_REF = currentRow(ExtendedDataEnum.PORT_INTERNAL_REF)
+                    nExtendedData.SALE1_VORI = currentRow(ExtendedDataEnum.SALE1_VORI)
+                    nExtendedData.SALE1_CHANGE_CODE = currentRow(ExtendedDataEnum.SALE1_CHANGE_CODE)
+                    nExtendedData.SALE2_VORI = currentRow(ExtendedDataEnum.SALE2_VORI)
+                    nExtendedData.SALE2_CHANGE_CODE = currentRow(ExtendedDataEnum.SALE2_CHANGE_CODE)
+                    nExtendedData.SALE3_VORI = currentRow(ExtendedDataEnum.SALE3_VORI)
+                    nExtendedData.SALE3_CHANGE_CODE = currentRow(ExtendedDataEnum.SALE3_CHANGE_CODE)
+                    nExtendedData.SALE4_VORI = currentRow(ExtendedDataEnum.SALE4_VORI)
+                    nExtendedData.SALE4_CHANGE_CODE = currentRow(ExtendedDataEnum.SALE4_CHANGE_CODE)
+                    nExtendedData.SALE5_VORI = currentRow(ExtendedDataEnum.SALE5_VORI)
+                    nExtendedData.SALE5_CHANGE_CODE = currentRow(ExtendedDataEnum.SALE5_CHANGE_CODE)
+                    nExtendedData.PRELIM_JUST_VALUE = currentRow(ExtendedDataEnum.PRELIM_JUST_VALUE)
+                    nExtendedData.PRELIM_JV_CHANGE_REASON = currentRow(ExtendedDataEnum.PRELIM_JV_CHANGE_REASON)
+                    nExtendedData.GIS_SQUARE_FOOT = currentRow(ExtendedDataEnum.GIS_SQUARE_FOOT)
+                    nExtendedData.ACTUAL_YEAR_BUILT = currentRow(ExtendedDataEnum.ACTUAL_YEAR_BUILT)
+                    nExtendedData.LAST_PHYSICAL_INSPECTION = currentRow(ExtendedDataEnum.LAST_PHYSICAL_INSPECTION)
+                    nExtendedData.OWNERS_DOMICILE = currentRow(ExtendedDataEnum.OWNERS_DOMICILE)
+                    nExtendedData.CENSUS_BLOCK = currentRow(ExtendedDataEnum.CENSUS_BLOCK)
+                    nExtendedData.SALE1_QUAL_CODE = currentRow(ExtendedDataEnum.SALE1_QUAL_CODE)
+                    nExtendedData.SALE2_QUAL_CODE = currentRow(ExtendedDataEnum.SALE2_QUAL_CODE)
+                    nExtendedData.SALE3_QUAL_CODE = currentRow(ExtendedDataEnum.SALE3_QUAL_CODE)
+                    nExtendedData.SALE4_QUAL_CODE = currentRow(ExtendedDataEnum.SALE4_QUAL_CODE)
+                    nExtendedData.SALE5_QUAL_CODE = currentRow(ExtendedDataEnum.SALE5_QUAL_CODE)
+                    nExtendedData.PAIRING_CODE = currentRow(ExtendedDataEnum.PAIRING_CODE)
+                    nExtendedData.LAND_TAG = currentRow(ExtendedDataEnum.LAND_TAG)
+                    nExtendedData.MISC_DISTRICT = currentRow(ExtendedDataEnum.MISC_DISTRICT)
+                    nExtendedData.MISC_DIST_AMOUNT = currentRow(ExtendedDataEnum.MISC_DIST_AMOUNT)
+                    nExtendedData.NCU_LAND2 = currentRow(ExtendedDataEnum.NCU_LAND2)
+                    nExtendedData.NCU_BLDG2 = currentRow(ExtendedDataEnum.NCU_BLDG2)
+                    nExtendedData.BEDS = currentRow(ExtendedDataEnum.BEDS)
+                    nExtendedData.BATHS = currentRow(ExtendedDataEnum.BATHS)
+                    nExtendedData.LY_NCU_LAND2 = currentRow(ExtendedDataEnum.LY_NCU_LAND2)
+                    nExtendedData.LY_NCU_BLDG2 = currentRow(ExtendedDataEnum.LY_NCU_BLDG2)
+                    nExtendedData.LY_SB_SOH_VALUE = currentRow(ExtendedDataEnum.LY_SB_SOH_VALUE)
+                    nExtendedData.CBROW = currentRow(ExtendedDataEnum.CBROW)
+                    nExtendedData.LYCBROW = currentRow(ExtendedDataEnum.LYCBROW)
+                    nExtendedData.GRANNY_FLAT_REDUCTION = currentRow(ExtendedDataEnum.GRANNY_FLAT_REDUCTION)
+                    nExtendedData.CRA = currentRow(ExtendedDataEnum.CRA)
+                    nExtendedData.DAMAGE_TYPE = currentRow(ExtendedDataEnum.DAMAGE_TYPE)
+                    nExtendedData.STORM_DISTRICT = currentRow(ExtendedDataEnum.STORM_DISTRICT)
+                    nExtendedData.STORM_ASSESSMENT = currentRow(ExtendedDataEnum.STORM_ASSESSMENT)
+                    nExtendedData.CLEAN_DISTRICT = currentRow(ExtendedDataEnum.CLEAN_DISTRICT)
+                    nExtendedData.CLEAN_ASSESSMENT = currentRow(ExtendedDataEnum.CLEAN_ASSESSMENT)
+
+                    If GetCodeName(nExtendedData.USE_CODE).ToLower.Contains("vacant") Then
+                        ExtendedDataList.Add(nExtendedData)
+                    End If
+
+                Catch ex As Microsoft.VisualBasic.FileIO.MalformedLineException
+                    MsgBox("Line " & ex.Message & " is invalid.  Skipping")
+                End Try
+            End While
+        End Using
+
+
+
+        Dim InspectionDataFile As String = Server.MapPath("/App_Data/InspectionData.csv")
+        Using MyReader As New Microsoft.VisualBasic.FileIO.TextFieldParser(InspectionDataFile)
+            MyReader.TextFieldType = Microsoft.VisualBasic.FileIO.FieldType.Delimited
+            MyReader.Delimiters = New String() {","}
+            Dim currentRow As String()
+            While Not MyReader.EndOfData
+                Try
+                    currentRow = MyReader.ReadFields()
+                    Dim nInspectionData As New InspectionData
+                    nInspectionData.Inspector_ID = currentRow(InspectionDataEnum.Inspector_ID)
+                    nInspectionData.InspectorName = currentRow(InspectionDataEnum.InspectorName)
+                    nInspectionData.PermitNumber = currentRow(InspectionDataEnum.PermitNumber)
+                    nInspectionData.InspectionDate = currentRow(InspectionDataEnum.InspectionDate)
+                    nInspectionData.Owner = currentRow(InspectionDataEnum.Owner)
+                    nInspectionData.Address = currentRow(InspectionDataEnum.Address)
+                    nInspectionData.ZipCode = currentRow(InspectionDataEnum.ZipCode)
+                    nInspectionData.Apt = currentRow(InspectionDataEnum.Apt)
+                    nInspectionData.PermitType = currentRow(InspectionDataEnum.PermitType)
+                    nInspectionData.InspectionType = currentRow(InspectionDataEnum.InspectionType)
+                    nInspectionData.InspectionResults = currentRow(InspectionDataEnum.InspectionResults)
+                    nInspectionData.InspectionCodeDesc = currentRow(InspectionDataEnum.InspectionCodeDesc)
+                    nInspectionData.LocID = currentRow(InspectionDataEnum.LocID)
+                    With currentRow(InspectionDataEnum.FolioNo)
+                        nInspectionData.FolioNo = "4" & .Substring(0, 1) & "4" & .Substring(1)
+                    End With
+
+                    InspectionDataList.Add(nInspectionData)
+                Catch ex As Microsoft.VisualBasic.FileIO.MalformedLineException
+                    MsgBox("Line " & ex.Message & " is invalid.  Skipping")
+                End Try
+            End While
+        End Using
+
+        Dim DataForGrid = (
+            From x In ExtendedDataList
+            Where InspectionDataList.Where(Function(i) i.FolioNo = x.FOLIO_NUMBER).Count > 0
+            Select x
+        )
+        gvExtendedData.DataSource = DataForGrid
+        gvExtendedData.DataBind()
+
+        litCount.Text = DataForGrid.Count
+    End Sub
+
+    Public Class InspectionData
+        Public Property Inspector_ID As String = ""
+        Public Property InspectorName As String = ""
+        Public Property PermitNumber As String = ""
+        Public Property InspectionDate As String = ""
+        Public Property Owner As String = ""
+        Public Property Address As String = ""
+        Public Property ZipCode As String = ""
+        Public Property Apt As String = ""
+        Public Property PermitType As String = ""
+        Public Property InspectionType As String = ""
+        Public Property InspectionResults As String = ""
+        Public Property InspectionCodeDesc As String = ""
+        Public Property LocID As String = ""
+        Public Property FolioNo As String = ""
+    End Class
+
+    Public Class ExtendedData
+        Public Property FOLIO_NUMBER As String = ""
+        Public Property NAME_LINE_1 As String = ""
+        Public Property NAME_LINE_2 As String = ""
+        Public Property ADDRESS_LINE_1 As String = ""
+        Public Property CITY As String = ""
+        Public Property STATE As String = ""
+        Public Property ZIP As String = ""
+        Public Property ADDRESS_LINE_2 As String = ""
+        Public Property LEGAL_LINE_1 As String = ""
+        Public Property LEGAL_LINE_2 As String = ""
+        Public Property LEGAL_LINE_3 As String = ""
+        Public Property LEGAL_LINE_4 As String = ""
+        Public Property LEGAL_LINE_5 As String = ""
+        Public Property LEGAL_LINE_6 As String = ""
+        Public Property LEGAL_LINE_7 As String = ""
+        Public Property LEGAL_LINE_8 As String = ""
+        Public Property LEGAL_LINE_9 As String = ""
+        Public Property LEGAL_LINE_10 As String = ""
+        Public Property LEGAL_LINE_11 As String = ""
+        Public Property LEGAL_LINE_12 As String = ""
+        Public Property LEGAL_LINE_13 As String = ""
+        Public Property LEGAL_LINE_14 As String = ""
+        Public Property ZIP4 As String = ""
+        Public Property MILLAGE_CODE As String = ""
+        Public Property USE_CODE As String = ""
+        Public Property USE_TYPE As String = ""
+        Public Property MARKET_AREA As String = ""
+        Public Property COMB_SPLIT As String = ""
+        Public Property JUST_LAND_VALUE As String = ""
+        Public Property JUST_BUILDING_VALUE As String = ""
+        Public Property JUST_OTHER_VALUE As String = ""
+        Public Property LY_JUSTVAL As String = ""
+        Public Property LY_SOHL As String = ""
+        Public Property LY_SOHB As String = ""
+        Public Property PREV_SOH_VALUE As String = ""
+        Public Property NEW_SOH_VALUE As String = ""
+        Public Property NEW_SB_SOH_VALUE As String = ""
+        Public Property HE1_AMOUNT As String = ""
+        Public Property HE2_AMOUNT As String = ""
+        Public Property WVD_AMOUNT As String = ""
+        Public Property EXEMPTION_AMOUNT As String = ""
+        Public Property COUNTY_MEX_AMOUNT As String = ""
+        Public Property SCHOOL_MEX_AMOUNT As String = ""
+        Public Property CITY_MEX_AMOUNT As String = ""
+        Public Property INDEP_MEX_AMOUNT As String = ""
+        Public Property COUNTY_TAXABLE As String = ""
+        Public Property SCHOOL_TAXABLE As String = ""
+        Public Property CITY_TAXABLE As String = ""
+        Public Property INDEP_TAXABLE As String = ""
+        Public Property HE_PERCENT As String = ""
+        Public Property LY_HE_PERCENT As String = ""
+        Public Property ME_PERCENT As String = ""
+        Public Property WVD_TYPE As String = ""
+        Public Property EXEMPTION_TYPE As String = ""
+        Public Property SOH_YEAR As String = ""
+        Public Property COM_SOH_YEAR As String = ""
+        Public Property FLAT_RATE_FLAG As String = ""
+        Public Property DEL_FLAG As String = ""
+        Public Property DEL_VALUE As String = ""
+        Public Property ADD_VALUE As String = ""
+        Public Property LIGHT_DISTRICT As String = ""
+        Public Property GARBAGE_DISTRICT As String = ""
+        Public Property GARBAGE_ASSESSMENT As String = ""
+        Public Property FIRE_DISTRICT As String = ""
+        Public Property FIRE_CLASS As String = ""
+        Public Property FIRE_ASSESSMENT As String = ""
+        Public Property SAFE_NEIGHBORHOOD_DISTRICT As String = ""
+        Public Property SAFE_NEIGHORHOOD_ASSESSMENT As String = ""
+        Public Property DRAINAGE_DISTRICT As String = ""
+        Public Property DRAINAGE_DISTRICT_ASSESSMENT As String = ""
+        Public Property IMPROVEMENT_DISTRICT As String = ""
+        Public Property IMPROVEMENT_ASSESSMENT As String = ""
+        Public Property SALE_DATE_1 As String = ""
+        Public Property DEED_TYPE_1 As String = ""
+        Public Property STAMP_AMOUNT_1 As String = ""
+        Public Property BOOK_1 As String = ""
+        Public Property PAGE_1 As String = ""
+        Public Property SALE_DATE_2 As String = ""
+        Public Property DEED_TYPE_2 As String = ""
+        Public Property STAMP_AMOUNT_2 As String = ""
+        Public Property BOOK_2 As String = ""
+        Public Property PAGE_2 As String = ""
+        Public Property SALE_DATE_3 As String = ""
+        Public Property DEED_TYPE_3 As String = ""
+        Public Property STAMP_AMOUNT_3 As String = ""
+        Public Property BOOK_3 As String = ""
+        Public Property PAGE_3 As String = ""
+        Public Property SALE_DATE_4 As String = ""
+        Public Property DEED_TYPE_4 As String = ""
+        Public Property STAMP_AMOUNT_4 As String = ""
+        Public Property BOOK_4 As String = ""
+        Public Property PAGE_4 As String = ""
+        Public Property SALE_DATE_5 As String = ""
+        Public Property DEED_TYPE_5 As String = ""
+        Public Property STAMP_AMOUNT_5 As String = ""
+        Public Property BOOK_5 As String = ""
+        Public Property PAGE_5 As String = ""
+        Public Property LAND_CALC_PRC_PER_FACT_UNIT_1 As String = ""
+        Public Property LAND_CALC_FACT_1 As String = ""
+        Public Property LAND_CALC_TYPE_1 As String = ""
+        Public Property LAND_CALC_PRC_PER_FACT_UNIT_2 As String = ""
+        Public Property LAND_CALC_FACT_2 As String = ""
+        Public Property LAND_CALC_TYPE_2 As String = ""
+        Public Property LAND_CALC_PRC_PER_FACT_UNIT_3 As String = ""
+        Public Property LAND_CALC_FACT_3 As String = ""
+        Public Property LAND_CALC_TYPE_3 As String = ""
+        Public Property LAND_CALC_PRC_PER_FACT_UNIT_4 As String = ""
+        Public Property LAND_CALC_FACT_4 As String = ""
+        Public Property LAND_CALC_TYPE_4 As String = ""
+        Public Property SITUS_STREET_NUMBER As String = ""
+        Public Property SITUS_STREET_NUMBER_END As String = ""
+        Public Property SITUS_STREET_DIRECTION As String = ""
+        Public Property SITUS_STREET_POST_DIR As String = ""
+        Public Property SITUS_STREET_NAME As String = ""
+        Public Property SITUS_STREET_TYPE As String = ""
+        Public Property SITUS_CITY As String = ""
+        Public Property SITUS_ZIP_CODE As String = ""
+        Public Property SITUS_UNIT_NUMBER As String = ""
+        Public Property LAST_YRS_JUST_LAND_VALUE As String = ""
+        Public Property LAST_YRS_JUST_BLDG_VALUE As String = ""
+        Public Property LAST_YRS_JUST_OTHER_VALUE As String = ""
+        Public Property LAST_YRS_TAXABLE_VALUE As String = ""
+        Public Property LAST_YRS_ASSESSED As String = ""
+        Public Property LAST_YRS_SOH As String = ""
+        Public Property TWO_YRS_JUST_LAND_VALUE As String = ""
+        Public Property TWO_YRS_JUST_BLDG_VALUE As String = ""
+        Public Property TWO_YRS_JUST_OTHER_VALUE As String = ""
+        Public Property TWO_YRS_TAXABLE_VALUE As String = ""
+        Public Property TWO_YRS_ASSESSED As String = ""
+        Public Property TWO_YRS_SOH As String = ""
+        Public Property BLDG_ADJ_SQ_FOOTAGE As String = ""
+        Public Property BLDG_TOT_SQ_FOOTAGE As String = ""
+        Public Property BLDG_UNITS As String = ""
+        Public Property BLDG_YEAR_BUILT As String = ""
+        Public Property BLDG_IMPROVE_QUAL As String = ""
+        Public Property BLDG_CCLASS As String = ""
+        Public Property BLDG_NUM_OF As String = ""
+        Public Property BLDG_USE_CODE As String = ""
+        Public Property HOMESTEAD_FLAG As String = ""
+        Public Property NCU_LAND As String = ""
+        Public Property NCU_BLDG As String = ""
+        Public Property NCU_PCT As String = ""
+        Public Property LY_NCU_PCT As String = ""
+        Public Property A_DATE As String = ""
+        Public Property L_DATE As String = ""
+        Public Property B_DATE As String = ""
+        Public Property SALE_VER1 As String = ""
+        Public Property SALE_VER2 As String = ""
+        Public Property SALE_VER3 As String = ""
+        Public Property SALE_VER4 As String = ""
+        Public Property DISASTER_CODE As String = ""
+        Public Property DISASTER_YEAR As String = ""
+        Public Property SENIOR As String = ""
+        Public Property SEN_EX_COUNTY As String = ""
+        Public Property SEN_EX_CITY As String = ""
+        Public Property PORTABILITY As String = ""
+        Public Property PORT_SPLIT As String = ""
+        Public Property PORTED_VAL As String = ""
+        Public Property PORT_UD As String = ""
+        Public Property PORT_PMARKET As String = ""
+        Public Property PORT_PSOH As String = ""
+        Public Property PORT_PCOUNTY As String = ""
+        Public Property PORT_PFOLIO As String = ""
+        Public Property PORT_YEAR_TRANS As String = ""
+        Public Property PORT_INTERNAL_REF As String = ""
+        Public Property SALE1_VORI As String = ""
+        Public Property SALE1_CHANGE_CODE As String = ""
+        Public Property SALE2_VORI As String = ""
+        Public Property SALE2_CHANGE_CODE As String = ""
+        Public Property SALE3_VORI As String = ""
+        Public Property SALE3_CHANGE_CODE As String = ""
+        Public Property SALE4_VORI As String = ""
+        Public Property SALE4_CHANGE_CODE As String = ""
+        Public Property SALE5_VORI As String = ""
+        Public Property SALE5_CHANGE_CODE As String = ""
+        Public Property PRELIM_JUST_VALUE As String = ""
+        Public Property PRELIM_JV_CHANGE_REASON As String = ""
+        Public Property GIS_SQUARE_FOOT As String = ""
+        Public Property ACTUAL_YEAR_BUILT As String = ""
+        Public Property LAST_PHYSICAL_INSPECTION As String = ""
+        Public Property OWNERS_DOMICILE As String = ""
+        Public Property CENSUS_BLOCK As String = ""
+        Public Property SALE1_QUAL_CODE As String = ""
+        Public Property SALE2_QUAL_CODE As String = ""
+        Public Property SALE3_QUAL_CODE As String = ""
+        Public Property SALE4_QUAL_CODE As String = ""
+        Public Property SALE5_QUAL_CODE As String = ""
+        Public Property PAIRING_CODE As String = ""
+        Public Property LAND_TAG As String = ""
+        Public Property MISC_DISTRICT As String = ""
+        Public Property MISC_DIST_AMOUNT As String = ""
+        Public Property NCU_LAND2 As String = ""
+        Public Property NCU_BLDG2 As String = ""
+        Public Property BEDS As String = ""
+        Public Property BATHS As String = ""
+        Public Property LY_NCU_LAND2 As String = ""
+        Public Property LY_NCU_BLDG2 As String = ""
+        Public Property LY_SB_SOH_VALUE As String = ""
+        Public Property CBROW As String = ""
+        Public Property LYCBROW As String = ""
+        Public Property GRANNY_FLAT_REDUCTION As String = ""
+        Public Property CRA As String = ""
+        Public Property DAMAGE_TYPE As String = ""
+        Public Property STORM_DISTRICT As String = ""
+        Public Property STORM_ASSESSMENT As String = ""
+        Public Property CLEAN_DISTRICT As String = ""
+        Public Property CLEAN_ASSESSMENT As String = ""
+    End Class
+
+    Public Enum InspectionDataEnum
+        Inspector_ID = 0
+        InspectorName = 1
+        PermitNumber = 2
+        InspectionDate = 3
+        Owner = 4
+        Address = 5
+        ZipCode = 6
+        Apt = 7
+        PermitType = 8
+        InspectionType = 9
+        InspectionResults = 10
+        InspectionCodeDesc = 11
+        LocID = 12
+        FolioNo = 13
+    End Enum
+
+    Public Enum ExtendedDataEnum
+        FOLIO_NUMBER = 0
+        NAME_LINE_1 = 1
+        NAME_LINE_2 = 2
+        ADDRESS_LINE_1 = 3
+        CITY = 4
+        STATE = 5
+        ZIP = 6
+        ADDRESS_LINE_2 = 7
+        LEGAL_LINE_1 = 8
+        LEGAL_LINE_2 = 9
+        LEGAL_LINE_3 = 10
+        LEGAL_LINE_4 = 11
+        LEGAL_LINE_5 = 12
+        LEGAL_LINE_6 = 13
+        LEGAL_LINE_7 = 14
+        LEGAL_LINE_8 = 15
+        LEGAL_LINE_9 = 16
+        LEGAL_LINE_10 = 17
+        LEGAL_LINE_11 = 18
+        LEGAL_LINE_12 = 19
+        LEGAL_LINE_13 = 20
+        LEGAL_LINE_14 = 21
+        ZIP4 = 22
+        MILLAGE_CODE = 23
+        USE_CODE = 24
+        USE_TYPE = 25
+        MARKET_AREA = 26
+        COMB_SPLIT = 27
+        JUST_LAND_VALUE = 28
+        JUST_BUILDING_VALUE = 29
+        JUST_OTHER_VALUE = 30
+        LY_JUSTVAL = 31
+        LY_SOHL = 32
+        LY_SOHB = 33
+        PREV_SOH_VALUE = 34
+        NEW_SOH_VALUE = 35
+        NEW_SB_SOH_VALUE = 36
+        HE1_AMOUNT = 37
+        HE2_AMOUNT = 38
+        WVD_AMOUNT = 39
+        EXEMPTION_AMOUNT = 40
+        COUNTY_MEX_AMOUNT = 41
+        SCHOOL_MEX_AMOUNT = 42
+        CITY_MEX_AMOUNT = 43
+        INDEP_MEX_AMOUNT = 44
+        COUNTY_TAXABLE = 45
+        SCHOOL_TAXABLE = 46
+        CITY_TAXABLE = 47
+        INDEP_TAXABLE = 48
+        HE_PERCENT = 49
+        LY_HE_PERCENT = 50
+        ME_PERCENT = 51
+        WVD_TYPE = 52
+        EXEMPTION_TYPE = 53
+        SOH_YEAR = 54
+        COM_SOH_YEAR = 55
+        FLAT_RATE_FLAG = 56
+        DEL_FLAG = 57
+        DEL_VALUE = 58
+        ADD_VALUE = 59
+        LIGHT_DISTRICT = 60
+        GARBAGE_DISTRICT = 61
+        GARBAGE_ASSESSMENT = 62
+        FIRE_DISTRICT = 63
+        FIRE_CLASS = 64
+        FIRE_ASSESSMENT = 65
+        SAFE_NEIGHBORHOOD_DISTRICT = 66
+        SAFE_NEIGHORHOOD_ASSESSMENT = 67
+        DRAINAGE_DISTRICT = 68
+        DRAINAGE_DISTRICT_ASSESSMENT = 69
+        IMPROVEMENT_DISTRICT = 70
+        IMPROVEMENT_ASSESSMENT = 71
+        SALE_DATE_1 = 72
+        DEED_TYPE_1 = 73
+        STAMP_AMOUNT_1 = 74
+        BOOK_1 = 75
+        PAGE_1 = 76
+        SALE_DATE_2 = 77
+        DEED_TYPE_2 = 78
+        STAMP_AMOUNT_2 = 79
+        BOOK_2 = 80
+        PAGE_2 = 81
+        SALE_DATE_3 = 82
+        DEED_TYPE_3 = 83
+        STAMP_AMOUNT_3 = 84
+        BOOK_3 = 85
+        PAGE_3 = 86
+        SALE_DATE_4 = 87
+        DEED_TYPE_4 = 88
+        STAMP_AMOUNT_4 = 89
+        BOOK_4 = 90
+        PAGE_4 = 91
+        SALE_DATE_5 = 92
+        DEED_TYPE_5 = 93
+        STAMP_AMOUNT_5 = 94
+        BOOK_5 = 95
+        PAGE_5 = 96
+        LAND_CALC_PRC_PER_FACT_UNIT_1 = 97
+        LAND_CALC_FACT_1 = 98
+        LAND_CALC_TYPE_1 = 99
+        LAND_CALC_PRC_PER_FACT_UNIT_2 = 100
+        LAND_CALC_FACT_2 = 101
+        LAND_CALC_TYPE_2 = 102
+        LAND_CALC_PRC_PER_FACT_UNIT_3 = 103
+        LAND_CALC_FACT_3 = 104
+        LAND_CALC_TYPE_3 = 105
+        LAND_CALC_PRC_PER_FACT_UNIT_4 = 106
+        LAND_CALC_FACT_4 = 107
+        LAND_CALC_TYPE_4 = 108
+        SITUS_STREET_NUMBER = 109
+        SITUS_STREET_NUMBER_END = 110
+        SITUS_STREET_DIRECTION = 111
+        SITUS_STREET_POST_DIR = 112
+        SITUS_STREET_NAME = 113
+        SITUS_STREET_TYPE = 114
+        SITUS_CITY = 115
+        SITUS_ZIP_CODE = 116
+        SITUS_UNIT_NUMBER = 117
+        LAST_YRS_JUST_LAND_VALUE = 118
+        LAST_YRS_JUST_BLDG_VALUE = 119
+        LAST_YRS_JUST_OTHER_VALUE = 120
+        LAST_YRS_TAXABLE_VALUE = 121
+        LAST_YRS_ASSESSED = 122
+        LAST_YRS_SOH = 123
+        TWO_YRS_JUST_LAND_VALUE = 124
+        TWO_YRS_JUST_BLDG_VALUE = 125
+        TWO_YRS_JUST_OTHER_VALUE = 126
+        TWO_YRS_TAXABLE_VALUE = 127
+        TWO_YRS_ASSESSED = 128
+        TWO_YRS_SOH = 129
+        BLDG_ADJ_SQ_FOOTAGE = 130
+        BLDG_TOT_SQ_FOOTAGE = 131
+        BLDG_UNITS = 132
+        BLDG_YEAR_BUILT = 133
+        BLDG_IMPROVE_QUAL = 134
+        BLDG_CCLASS = 135
+        BLDG_NUM_OF = 136
+        BLDG_USE_CODE = 137
+        HOMESTEAD_FLAG = 138
+        NCU_LAND = 139
+        NCU_BLDG = 140
+        NCU_PCT = 141
+        LY_NCU_PCT = 142
+        A_DATE = 143
+        L_DATE = 144
+        B_DATE = 145
+        SALE_VER1 = 146
+        SALE_VER2 = 147
+        SALE_VER3 = 148
+        SALE_VER4 = 149
+        DISASTER_CODE = 150
+        DISASTER_YEAR = 151
+        SENIOR = 152
+        SEN_EX_COUNTY = 153
+        SEN_EX_CITY = 154
+        PORTABILITY = 155
+        PORT_SPLIT = 156
+        PORTED_VAL = 157
+        PORT_UD = 158
+        PORT_PMARKET = 159
+        PORT_PSOH = 160
+        PORT_PCOUNTY = 161
+        PORT_PFOLIO = 162
+        PORT_YEAR_TRANS = 163
+        PORT_INTERNAL_REF = 164
+        SALE1_VORI = 165
+        SALE1_CHANGE_CODE = 166
+        SALE2_VORI = 167
+        SALE2_CHANGE_CODE = 168
+        SALE3_VORI = 169
+        SALE3_CHANGE_CODE = 170
+        SALE4_VORI = 171
+        SALE4_CHANGE_CODE = 172
+        SALE5_VORI = 173
+        SALE5_CHANGE_CODE = 174
+        PRELIM_JUST_VALUE = 175
+        PRELIM_JV_CHANGE_REASON = 176
+        GIS_SQUARE_FOOT = 177
+        ACTUAL_YEAR_BUILT = 178
+        LAST_PHYSICAL_INSPECTION = 179
+        OWNERS_DOMICILE = 180
+        CENSUS_BLOCK = 181
+        SALE1_QUAL_CODE = 182
+        SALE2_QUAL_CODE = 183
+        SALE3_QUAL_CODE = 184
+        SALE4_QUAL_CODE = 185
+        SALE5_QUAL_CODE = 186
+        PAIRING_CODE = 187
+        LAND_TAG = 188
+        MISC_DISTRICT = 189
+        MISC_DIST_AMOUNT = 190
+        NCU_LAND2 = 191
+        NCU_BLDG2 = 192
+        BEDS = 193
+        BATHS = 194
+        LY_NCU_LAND2 = 195
+        LY_NCU_BLDG2 = 196
+        LY_SB_SOH_VALUE = 197
+        CBROW = 198
+        LYCBROW = 199
+        GRANNY_FLAT_REDUCTION = 200
+        CRA = 201
+        DAMAGE_TYPE = 202
+        STORM_DISTRICT = 203
+        STORM_ASSESSMENT = 204
+        CLEAN_DISTRICT = 205
+        CLEAN_ASSESSMENT = 206
+
+    End Enum
+
+End Class
